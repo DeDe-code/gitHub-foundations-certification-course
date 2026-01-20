@@ -21,10 +21,64 @@ Since we are using Github Codespaces we'll create temporary directory in our wor
 mkdir /workspace/tmp
 cd /workspace/tmp
 ```
-### HTTPS
+### HTTPS 
+<!--
+I didn't chose this path because I did that I usually do and it works, but this way also works.
+-->
 ```sh
 git clone https://github.com/DeDe-code/gitHub-foundations-certification-course.git
 cd gitHub-foundations-certification-course
+```
+
+> You'll need to generate a Personal Access Token (PAT)
+https://github.com/settings/token
+
+You'll use the PAT as your password when you log in
+- Give it access to Contents for Commits
+
+### SSH
+
+```sh
+gti clone git@github.com:DeDe-code/gitHub-foundations-certification-course.git # I did this! If you don't have SSH key you should generate one. You can get here: https://www.youtube.com/watch?v=Jdc0i7RcBv8&list=WL&index=18 at 1:54:56
+```
+We will need to create our own SSH rsa key pair
+```sh
+sshe-keygen -t rsa
+```
+
+For WSL users and if you create a non default key you might need to add it
+```sh
+eval `ssh-agent`
+ssh-add # here comes the file path 2:04:25
+```
+We can test our connection here:
+```sh
+ssh -T git@github.com
+```
+### Github CLI
+Install the CLI
+
+eg. Linux (Ubuntu)
+```sh
+(type -p wget >/dev/null || (sudo apt update && sudo apt install wget -y)) \
+	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
+	&& out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+	&& cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+	&& sudo mkdir -p -m 755 /etc/apt/sources.list.d \
+	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+	&& sudo apt update \
+	&& sudo apt install gh -y
+```
+To Upgrade
+```sh
+sudo apt update
+sudo apt install gh
+```
+Clone and login
+```sh
+gh auth login
+gh clone clone # here comes the CLI path from the repo
 ```
 ## Commits
 When we want commit the code we can write git commit which will open up the commit message in the editor of choice.
@@ -41,6 +95,18 @@ Make a commit and a commit message without opening an editor
 git commit -m "commit message"
 ```
 ## Branches
+List of branches
+```sh
+git branch
+```
+Create a new branch
+```sh
+git branch branch-name
+```
+Checkout the branch
+```sh
+git checkout branch-name
+```
 
 
 ## Remotes
