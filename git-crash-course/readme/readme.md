@@ -110,12 +110,76 @@ git checkout branch-name
 
 
 ## Remotes
+<!-- I didn't understand what happend here, so I should watch again this part of the video -->
+We can add remote but often you will just add remote via upstream when adding a brach
 
+```sh
+git remote add ...
+git branch -u origin new-feature
+```
 
 ## Stashing
+It is a Git feature that lets you temporarily save (shelve) your uncommitted work so you can return to a clean working directory, and then restore that work later.
 
+Think of it as putting your half-finished changes into a drawer so you can work on something else without committing.
+
+You use it when:
+You’re working on something unfinished
+You don’t want to commit yet
+You suddenly need to:
+switch branches
+pull updates
+fix a bug on another branch
+Instead of losing your work or making a messy commit, you stash it.
+
+Stash your current work
+```sh
+git stash
+git stash save my-name
+# Result: Your working directory becomes clean. Your changes are saved in a stash
+```
+See what’s in the stash
+```sh
+git stash list
+```
+Restore your stashed changes
+Apply (keep stash)
+```sh
+git stash apply
+```
+Apply and remove from stash (most used)
+```sh
+git stash pop
+```
+Stashing with a message (recommended)
+```sh
+git stash push -m "message"
+```
+Delete stashes
+Remove one stash
+```sh
+git stash drop stash@{0}
+```
+Remove all stashes
+```sh
+git stash clear # This cannot be undone
+```
+Important things to know
+
+⚠️ Stash is local
+Stashes are NOT pushed to GitHub
+They live only on your machine
+
+⚠️ Stash can conflict
+If files changed meanwhile, applying a stash can cause merge conflicts
+
+Git will ask you to resolve them
 
 ## Merging
+```sh
+git checkout dev
+git merge main
+```
 
 ## Add
 When we want to stage changes that will be included in the commit. W can use the . to add all possible files
