@@ -21,10 +21,64 @@ Since we are using Github Codespaces we'll create temporary directory in our wor
 mkdir /workspace/tmp
 cd /workspace/tmp
 ```
-### HTTPS
+### HTTPS 
+<!--
+I didn't chose this path because I did that I usually do and it works, but this way also works.
+-->
 ```sh
 git clone https://github.com/DeDe-code/gitHub-foundations-certification-course.git
 cd gitHub-foundations-certification-course
+```
+
+> You'll need to generate a Personal Access Token (PAT)
+https://github.com/settings/token
+
+You'll use the PAT as your password when you log in
+- Give it access to Contents for Commits
+
+### SSH
+
+```sh
+gti clone git@github.com:DeDe-code/gitHub-foundations-certification-course.git # I did this! If you don't have SSH key you should generate one. You can get here: https://www.youtube.com/watch?v=Jdc0i7RcBv8&list=WL&index=18 at 1:54:56
+```
+We will need to create our own SSH rsa key pair
+```sh
+sshe-keygen -t rsa
+```
+
+For WSL users and if you create a non default key you might need to add it
+```sh
+eval `ssh-agent`
+ssh-add # here comes the file path 2:04:25
+```
+We can test our connection here:
+```sh
+ssh -T git@github.com
+```
+### Github CLI
+Install the CLI
+
+eg. Linux (Ubuntu)
+```sh
+(type -p wget >/dev/null || (sudo apt update && sudo apt install wget -y)) \
+	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
+	&& out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+	&& cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+	&& sudo mkdir -p -m 755 /etc/apt/sources.list.d \
+	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+	&& sudo apt update \
+	&& sudo apt install gh -y
+```
+To Upgrade
+```sh
+sudo apt update
+sudo apt install gh
+```
+Clone and login
+```sh
+gh auth login
+gh clone clone # here comes the CLI path from the repo
 ```
 ## Commits
 When we want commit the code we can write git commit which will open up the commit message in the editor of choice.
@@ -41,15 +95,91 @@ Make a commit and a commit message without opening an editor
 git commit -m "commit message"
 ```
 ## Branches
+List of branches
+```sh
+git branch
+```
+Create a new branch
+```sh
+git branch branch-name
+```
+Checkout the branch
+```sh
+git checkout branch-name
+```
 
 
 ## Remotes
+<!-- I didn't understand what happend here, so I should watch again this part of the video -->
+We can add remote but often you will just add remote via upstream when adding a brach
 
+```sh
+git remote add ...
+git branch -u origin new-feature
+```
 
 ## Stashing
+It is a Git feature that lets you temporarily save (shelve) your uncommitted work so you can return to a clean working directory, and then restore that work later.
 
+Think of it as putting your half-finished changes into a drawer so you can work on something else without committing.
+
+You use it when:
+You’re working on something unfinished
+You don’t want to commit yet
+You suddenly need to:
+switch branches
+pull updates
+fix a bug on another branch
+Instead of losing your work or making a messy commit, you stash it.
+
+Stash your current work
+```sh
+git stash
+git stash save my-name
+# Result: Your working directory becomes clean. Your changes are saved in a stash
+```
+See what’s in the stash
+```sh
+git stash list
+```
+Restore your stashed changes
+Apply (keep stash)
+```sh
+git stash apply
+```
+Apply and remove from stash (most used)
+```sh
+git stash pop
+```
+Stashing with a message (recommended)
+```sh
+git stash push -m "message"
+```
+Delete stashes
+Remove one stash
+```sh
+git stash drop stash@{0}
+```
+Remove all stashes
+```sh
+git stash clear # This cannot be undone
+```
+Important things to know
+
+⚠️ Stash is local
+Stashes are NOT pushed to GitHub
+They live only on your machine
+
+⚠️ Stash can conflict
+If files changed meanwhile, applying a stash can cause merge conflicts
+
+Git will ask you to resolve them
 
 ## Merging
+```sh
+git checkout dev
+git merge main
+```
 
 ## Add
 When we want to stage changes that will be included in the commit. W can use the . to add all possible files
